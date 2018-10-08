@@ -1,9 +1,10 @@
 import models
-import data
+from data import AlphaVantage
 
 
 def main():
-    print("Hello")
+    stock = AlphaVantage.AlphaVantage()
+    print(stock.get_data())
 
 
 if __name__ == "__main__":
