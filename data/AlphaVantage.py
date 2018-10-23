@@ -11,8 +11,11 @@ class AlphaVantage:
         self.apiurl = "https://www.alphavantage.co/query?"
         self.outputsize = "full"
 
-    def get_data(self):
+    def get_data(self, symbol):
+        if symbol is None:
+            symbol = self.symbol
+
         url = "https://www.alphavantage.co/query?function=%s&symbol=%s&interval=%s&apikey=%s&outputsize=%s" \
-              % (self.function_name, self.symbol, self.interval, self.apikey, self.outputsize)
+              % (self.function_name, symbol, self.interval, self.apikey, self.outputsize)
 
         return requests.get(url).json()
