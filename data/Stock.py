@@ -1,4 +1,6 @@
 from models.LinearRegression import LinearRegression
+from models.ElasticNetRegression import ElasticNetRegression
+from models.LSTM import LSTM
 from . import AlphaVantage
 import pandas as pd
 import models
@@ -33,9 +35,15 @@ class Stock:
         forecast_col = '1. open'
         forecast_out = 5
         test_size = 0.2
+        X_train, X_test, y_train, y_test, X_lately = models.prepare_data(self.get_points(), forecast_col, forecast_out,
+                                                                         test_size)
+        scores = []
 
-        X_train, X_test, y_train, y_test, X_lately = models.prepare_data(self.get_points(), forecast_col, forecast_out, test_size)
-        model = LinearRegression()
-        model.train(X_train, y_train)
-        # y_pred = model.predict(X_test)
-        return model.score(X_test, y_test)
+        for model in [LinearRegression(), ElasticNetRegression(), LSTM()]:
+            model = LinearRegression()
+            model.train(X_train, y_train)
+            # y_pred = model.predict(X_test)
+
+            scores.append(model.score(X_test, y_test))
+
+        return scores
