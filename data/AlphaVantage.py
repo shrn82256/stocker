@@ -1,21 +1,19 @@
 import requests
 
 
-class AlphaVantage:
+_function_name = "TIME_SERIES_INTRADAY"
+_symbol = "MSFT"
+_interval = "1min"
+_apikey = "GUPPO7FAKF3SENRJ"
+_apiurl = "https://www.alphavantage.co/query?"
+_outputsize = "full"
 
-    def __init__(self):
-        self.function_name = "TIME_SERIES_INTRADAY"
-        self.symbol = "MSFT"
-        self.interval = "1min"
-        self.apikey = "GUPPO7FAKF3SENRJ"
-        self.apiurl = "https://www.alphavantage.co/query?"
-        self.outputsize = "full"
 
-    def get_data(self, symbol):
-        if symbol is None:
-            symbol = self.symbol
+def get_data(symbol):
+    if symbol is None:
+        symbol = _symbol
 
-        url = "https://www.alphavantage.co/query?function=%s&symbol=%s&interval=%s&apikey=%s&outputsize=%s" \
-              % (self.function_name, symbol, self.interval, self.apikey, self.outputsize)
+    url = "https://www.alphavantage.co/query?function=%s&symbol=%s&interval=%s&apikey=%s&outputsize=%s" \
+          % (_function_name, symbol, _interval, _apikey, _outputsize)
 
-        return requests.get(url).json()
+    return requests.get(url).json()

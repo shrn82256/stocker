@@ -1,5 +1,5 @@
 from models.LinearRegression import LinearRegression
-from .AlphaVantage import AlphaVantage
+from . import AlphaVantage
 import pandas as pd
 import models
 import json
@@ -14,9 +14,12 @@ class Stock:
 
     def get_data(self, index):
         if self.meta_data is None or self.points is None:
-            data = AlphaVantage().get_data(symbol=self.symbol)
-            self.meta_data = data['Meta Data']
-            self.points = pd.read_json(json.dumps(data['Time Series (1min)']), orient='index')
+            data = AlphaVantage.get_data(self.symbol)
+            try:
+                self.meta_data = data['Meta Data']
+                self.points = pd.read_json(json.dumps(data['Time Series (1min)']), orient='index')
+            except Exception as e:
+                print(self.symbol)
 
         return self.meta_data if index == 0 else self.points
 
