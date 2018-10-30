@@ -1,10 +1,10 @@
 from sklearn import linear_model
 
 
-class ElasticNetRegression:
+class ElasticNet:
 
     def __init__(self):
-        self.model = linear_model.ElasticNetRegression()
+        self.model = linear_model.ElasticNet()
 
     def train(self, X_train, y_train):
         self.model.fit(X_train, y_train)

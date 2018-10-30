@@ -13,7 +13,7 @@ def get_data(symbol):
     if symbol is None:
         symbol = _symbol
 
-    url = "https://www.alphavantage.co/query?function=%s&symbol=%s&interval=%s&apikey=%s&outputsize=%s" \
-          % (_function_name, symbol, _interval, _apikey, _outputsize)
-
+    url = "%sfunction=%s&symbol=%s&interval=%s&apikey=%s&outputsize=%s" \
+          % (_apiurl, _function_name, symbol, _interval, _apikey, _outputsize)
+    # print(symbol, url)
     return requests.get(url).json()

@@ -6,8 +6,8 @@ from sklearn import model_selection
 
 
 def prepare_data(df, forecast_col, forecast_out, test_size):
-    scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
-    df = scaler.fit_transform(df)
+    # scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
+    # df = scaler.fit_transform(df)
 
     label = df[forecast_col].shift(-forecast_out)
     X = np.array(df[[forecast_col]])
