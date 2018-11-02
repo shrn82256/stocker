@@ -3,6 +3,7 @@ from data.Stock import Stock
 from pprint import pprint
 from statistics import mean
 import pickle
+import socket
 import pandas as pd
 
 
@@ -57,7 +58,7 @@ def main():
             # except Exception as e:
             #     print(rank, stock.symbol, e)
             #     print(stock.points.head())
-        print("P", rank, [stock.symbol for stock in stocks], highest_diff_stock.symbol, diff)
+        print("P", rank, socket.gethostname(), [stock.symbol for stock in stocks], highest_diff_stock.symbol, diff)
         comm.send([highest_diff_stock.symbol, diff], dest=0)
 
         # print(rank, len(stocks), mean(predictions), len(predictions))
