@@ -12,21 +12,21 @@ rank = comm.Get_rank()
 # NASDAQ_LIST_FILE = "/mnt/d/Projects/stocker/db/companylist.csv"
 NASDAQ_LIST_FILE = "http://www.asisodia.com/datasets/companylist.csv"
 # NASDAQ_LIST_FILE = "db/companylist.csv"
-PER_NODE_LIMIT = 1
-# TOTAL_NODES = MPI.INFO_ENV.get("soft")
-TOTAL_NODES = int(MPI.INFO_ENV.get("maxprocs"))
+PER_NODE_LIMIT = 2
+# TOTAL_NODES = int(MPI.INFO_ENV.get("soft"))
+TOTAL_NODES = comm.Get_size()
 
 
 def main():
-    if rank != 0:
-        # stocks = pd.read_csv(NASDAQ_LIST_FILE)
-        #
-        # for i in range(1, TOTAL_NODES):
-        #     comm.send(stocks[(i-1)*PER_NODE_LIMIT: i*PER_NODE_LIMIT], dest=i)
-    # else:
-        pickle_off = open("db/%s.pickle" % rank, "rb")
-        stocks = pickle.load(pickle_off)
-        # stocks = [Stock(stock, True) for stock in comm.recv(source=0).symbol]
+    if rank == 0:
+        stocks = pd.read_csv(NASDAQ_LIST_FILE).sample(frac=1)
+        
+        for i in range(1, TOTAL_NODES):
+            comm.send(stocks[(i-1)*PER_NODE_LIMIT: i*PER_NODE_LIMIT], dest=i)
+    else:
+        # pickle_off = open("db/%s.pickle" % rank, "rb")
+        # stocks = pickle.load(pickle_off)
+        stocks = [Stock(stock, True) for stock in comm.recv(source=0).symbol]
         # pickling_on = open("db/%s.pickle" % rank, "wb")
         # pickle.dump(stocks, pickling_on)
         # pickling_on.close()
@@ -47,7 +47,7 @@ def main():
             # except Exception as e:
             #     print(rank, stock.symbol, e)
             #     print(stock.points.head())
-        print(highest_diff_stock.symbol, diff)
+        print("P", rank, [stock.symbol for stock in stocks], highest_diff_stock.symbol, diff)
 
         # print(rank, len(stocks), mean(predictions), len(predictions))
         # print(stocks[0].get_points().head())
