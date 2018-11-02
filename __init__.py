@@ -23,6 +23,16 @@ def main():
         
         for i in range(1, TOTAL_NODES):
             comm.send(stocks[(i-1)*PER_NODE_LIMIT: i*PER_NODE_LIMIT], dest=i)
+        
+        best_stock = None
+        best_stock_profit = -1
+        for i in range(1, TOTAL_NODES):
+            stock = comm.recv(source=i)
+            if stock[1] > best_stock_profit:
+                best_stock = stock[0]
+                best_stock_profit = stock[1]
+        
+        print("P", rank, best_stock, best_stock_profit)
     else:
         # pickle_off = open("db/%s.pickle" % rank, "rb")
         # stocks = pickle.load(pickle_off)
@@ -48,6 +58,7 @@ def main():
             #     print(rank, stock.symbol, e)
             #     print(stock.points.head())
         print("P", rank, [stock.symbol for stock in stocks], highest_diff_stock.symbol, diff)
+        comm.send([highest_diff_stock.symbol, diff], dest=0)
 
         # print(rank, len(stocks), mean(predictions), len(predictions))
         # print(stocks[0].get_points().head())
