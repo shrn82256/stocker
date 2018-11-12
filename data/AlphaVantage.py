@@ -9,11 +9,13 @@ _apiurl = "https://www.alphavantage.co/query?"
 _outputsize = "full"
 
 
-def get_data(symbol):
+def get_data(symbol, apikey):
     if symbol is None:
         symbol = _symbol
+    if apikey is None:
+        apikey = _apikey
 
     url = "%sfunction=%s&symbol=%s&interval=%s&apikey=%s&outputsize=%s" \
-          % (_apiurl, _function_name, symbol, _interval, _apikey, _outputsize)
+          % (_apiurl, _function_name, symbol, _interval, apikey, _outputsize)
     # print(symbol, url)
     return requests.get(url).json()

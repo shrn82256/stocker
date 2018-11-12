@@ -10,8 +10,9 @@ import json
 
 class Stock:
 
-    def __init__(self, symbol, get_data_flag=False):
+    def __init__(self, symbol, api_key, get_data_flag=False):
         self.symbol = symbol
+        self.api_key = api_key
         self.meta_data = None
         self.points = None
 
@@ -20,7 +21,7 @@ class Stock:
 
     def get_data(self, index):
         if self.meta_data is None or self.points is None:
-            data = AlphaVantage.get_data(self.symbol)
+            data = AlphaVantage.get_data(self.symbol, self.api_key)
             try:
                 self.meta_data = data['Meta Data']
                 self.points = pd.read_json(json.dumps(data['Time Series (1min)']), orient='index')
