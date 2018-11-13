@@ -1,5 +1,5 @@
 from sklearn import svm
-
+from sklearn.metrics import precision_recall_curve
 
 class SVR:
 
@@ -15,3 +15,9 @@ class SVR:
     def score(self, X_test, y_test):
         return self.model.score(X_test, y_test)
 
+    """
+    def calc_precision_recall(self, X_test, y_test):
+        y_score = self.model.decision_function(X_test)
+        precision, recall, _ = precision_recall_curve(y_test, y_score)
+        return precision, recall
+    """
